@@ -3,13 +3,13 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-anchor_program_example = "GpVcgWdgVErgLqsn8VYUch6EqDerMgNqoLSmGyKrd6MR"
+anchor_program_example = "7kgjKwrGN4DaruozxdTZCnpknC9YXJfiXex1XjGUMi47"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "Devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
