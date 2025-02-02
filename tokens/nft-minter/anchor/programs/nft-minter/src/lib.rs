@@ -13,7 +13,7 @@ use {
     },
 };
 
-declare_id!("52quezNUzc1Ej6Jh6L4bvtxPW8j6TEFHuLVAWiFvdnsc");
+declare_id!("7WepbpUf4pi7H7zDCe92kUBtQEcmXqkxUHbdWsJzzwr");
 
 #[program]
 pub mod nft_minter {
