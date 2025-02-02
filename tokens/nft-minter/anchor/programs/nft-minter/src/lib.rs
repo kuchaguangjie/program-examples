@@ -15,6 +15,7 @@ use {
 
 declare_id!("7WepbpUf4pi7H7zDCe92kUBtQEcmXqkxUHbdWsJzzwr");
 
+// create & mint NFT, then disable mint via metaplex's master edition,
 #[program]
 pub mod nft_minter {
     use super::*;
