@@ -5,13 +5,14 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-swap_example = "AsGVFxWqEn8icRBFQApxJe68x3r9zvfSbmiEzYFATGYn"
+swap_example = "67TZtJh41ogmUTij3zPxH1buWhf9q7TsrDkNUpD9c86k"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+# cluster = "Localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
@@ -20,3 +21,4 @@ test = "pnpm ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
 [test]
 startup_wait = 5000
 shutdown_wait = 2000
+upgradeable = false

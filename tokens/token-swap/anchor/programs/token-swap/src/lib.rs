@@ -8,7 +8,7 @@ mod instructions;
 mod state;
 
 // Set the correct key here
-declare_id!("AsGVFxWqEn8icRBFQApxJe68x3r9zvfSbmiEzYFATGYn");
+declare_id!("67TZtJh41ogmUTij3zPxH1buWhf9q7TsrDkNUpD9c86k");
 
 #[program]
 pub mod swap_example {
