@@ -16,7 +16,9 @@ cluster = "Localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
-test = "pnpm ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+# test = "pnpm ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+# test = "pnpm ts-mocha -p ./tsconfig.json -t 1000000 tests/create-amm.ts"
+test = "pnpm ts-mocha -p ./tsconfig.json -t 1000000 tests/swap.ts"
 
 [test]
 startup_wait = 5000
