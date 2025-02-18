@@ -17,7 +17,7 @@ describe('Swap', () => {
   beforeEach(async () => {
     values = createValues();
 
-    await program.methods.createAmm(values.id, values.fee).accounts({ amm: values.ammKey, admin: values.admin.publicKey }).rpc();
+    await program.methods.createAmm(values.id, values.fee).accounts({ admin: values.admin.publicKey }).rpc();
 
     await mintingTokens({
       connection,
@@ -29,31 +29,15 @@ describe('Swap', () => {
     await program.methods
       .createPool()
       .accounts({
-        amm: values.ammKey,
-        pool: values.poolKey,
-        poolAuthority: values.poolAuthority,
-        mintLiquidity: values.mintLiquidity,
         mintA: values.mintAKeypair.publicKey,
         mintB: values.mintBKeypair.publicKey,
-        poolAccountA: values.poolAccountA,
-        poolAccountB: values.poolAccountB,
       })
       .rpc();
 
     await program.methods
       .depositLiquidity(values.depositAmountA, values.depositAmountB)
       .accounts({
-        pool: values.poolKey,
-        poolAuthority: values.poolAuthority,
         depositor: values.admin.publicKey,
-        mintLiquidity: values.mintLiquidity,
-        mintA: values.mintAKeypair.publicKey,
-        mintB: values.mintBKeypair.publicKey,
-        poolAccountA: values.poolAccountA,
-        poolAccountB: values.poolAccountB,
-        depositorAccountLiquidity: values.liquidityAccount,
-        depositorAccountA: values.holderAccountA,
-        depositorAccountB: values.holderAccountB,
       })
       .signers([values.admin])
       .rpc({ skipPreflight: true });
@@ -64,16 +48,7 @@ describe('Swap', () => {
     await program.methods
       .swapExactTokensForTokens(true, input, new BN(100))
       .accounts({
-        amm: values.ammKey,
-        pool: values.poolKey,
-        poolAuthority: values.poolAuthority,
         trader: values.admin.publicKey,
-        mintA: values.mintAKeypair.publicKey,
-        mintB: values.mintBKeypair.publicKey,
-        poolAccountA: values.poolAccountA,
-        poolAccountB: values.poolAccountB,
-        traderAccountA: values.holderAccountA,
-        traderAccountB: values.holderAccountB,
       })
       .signers([values.admin])
       .rpc({ skipPreflight: true });
