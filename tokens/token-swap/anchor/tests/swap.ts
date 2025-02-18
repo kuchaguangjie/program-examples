@@ -1,5 +1,6 @@
 import * as anchor from '@coral-xyz/anchor';
 import type { Program } from '@coral-xyz/anchor';
+import { PublicKey } from '@solana/web3.js';
 import { BN } from 'bn.js';
 import { expect } from 'chai';
 import type { SwapExample } from '../target/types/swap_example';
@@ -11,13 +12,25 @@ describe('Swap', () => {
   anchor.setProvider(provider);
 
   const program = anchor.workspace.SwapExample as Program<SwapExample>;
+  const idPubkey = new PublicKey('sL5GdtZPEmVEtKUhSQXC6Z6oJRvihg6dyiW6ZDEndD3');
+  const sysPubkey = new PublicKey('11111111111111111111111111111111');
+  const tpPubkey = new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+  const atpPubkey = new PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL');
 
   let values: TestValues;
 
   beforeEach(async () => {
     values = createValues();
 
-    await program.methods.createAmm(values.id, values.fee).accounts({ amm: values.ammKey, admin: values.admin.publicKey }).rpc();
+    await program.methods
+      .createAmm(values.id, values.fee)
+      .accountsStrict({
+        amm: values.ammKey,
+        admin: values.admin.publicKey,
+        payer: idPubkey,
+        systemProgram: sysPubkey, // ! demo
+      })
+      .rpc();
 
     await mintingTokens({
       connection,
@@ -28,7 +41,7 @@ describe('Swap', () => {
 
     await program.methods
       .createPool()
-      .accounts({
+      .accountsStrict({
         amm: values.ammKey,
         pool: values.poolKey,
         poolAuthority: values.poolAuthority,
@@ -37,12 +50,16 @@ describe('Swap', () => {
         mintB: values.mintBKeypair.publicKey,
         poolAccountA: values.poolAccountA,
         poolAccountB: values.poolAccountB,
+        payer: idPubkey,
+        tokenProgram: tpPubkey, // ! demo
+        associatedTokenProgram: atpPubkey, // ! demo
+        systemProgram: sysPubkey, // ! demo
       })
       .rpc();
 
     await program.methods
       .depositLiquidity(values.depositAmountA, values.depositAmountB)
-      .accounts({
+      .accountsStrict({
         pool: values.poolKey,
         poolAuthority: values.poolAuthority,
         depositor: values.admin.publicKey,
@@ -54,6 +71,10 @@ describe('Swap', () => {
         depositorAccountLiquidity: values.liquidityAccount,
         depositorAccountA: values.holderAccountA,
         depositorAccountB: values.holderAccountB,
+        payer: idPubkey,
+        tokenProgram: tpPubkey, // ! demo
+        associatedTokenProgram: atpPubkey, // ! demo
+        systemProgram: sysPubkey, // ! demo
       })
       .signers([values.admin])
       .rpc({ skipPreflight: true });
@@ -63,7 +84,7 @@ describe('Swap', () => {
     const input = new BN(10 ** 6);
     await program.methods
       .swapExactTokensForTokens(true, input, new BN(100))
-      .accounts({
+      .accountsStrict({
         amm: values.ammKey,
         pool: values.poolKey,
         poolAuthority: values.poolAuthority,
@@ -74,6 +95,10 @@ describe('Swap', () => {
         poolAccountB: values.poolAccountB,
         traderAccountA: values.holderAccountA,
         traderAccountB: values.holderAccountB,
+        payer: idPubkey,
+        tokenProgram: tpPubkey, // ! demo
+        associatedTokenProgram: atpPubkey, // ! demo
+        systemProgram: sysPubkey, // ! demo
       })
       .signers([values.admin])
       .rpc({ skipPreflight: true });
